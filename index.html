@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Document</title>
+</head>
+<body>
+    <main>
+        <!-- Modal que lista los personajes creados -->
+        <div id="charactersListModal" class="modal">
+            
+            <!-- Modal content -->
+            <div class="modal-content" id="characterList">
+                <h2>Choose your character</h2>
+                <div id="newCharacter" class="newCharContainer">
+                    <img src="./src/img/Character-icon-2.2.svg" alt="new Character">
+                    <h3>New character</h3>
+                </div>
+            </div>
+        
+        </div>
+
+        <!-- Modal para iniciar la creación de personaje -->
+        <div id="nameModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                    <label for="characterName">Character name</label>
+                    <input type="text" id="characterName">
+                    <select name="characterRace" id="characterRace">
+                        <option value="default" disabled selected>Choose a race</option>
+                    </select>
+                    <button style="display: none" id="modalNameButton">Next</button>
+            </div>
+        
+        </div>
+
+        <!-- Modal para continuar la creación del personaje -->
+        <div id="classModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content" id="classModalContent">
+                <select name="characterClass" id="characterClass">
+                    <option value="default" disabled selected>Choose a class</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Modal para finalizar la creación de personajes-->
+        <div id="dicesModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content" id="dicesThrower">
+                <div id="dicesDiv">
+                    <h2>Throw the dices!</h2>
+                    <img src="./src/img/dice1.png" id="dice1" alt="Dices to throw to calculate abilities scores">
+                    <img src="./src/img/dice2.png" id="dice2" alt="Dices to throw to calculate abilities scores">
+                    <img src="./src/img/dice3.png" id="dice3" alt="Dices to throw to calculate abilities scores">
+                    <button id="dicesButton">Throw</button>
+                </div>
+                
+                <button id="abilitiesConfirmation">Confirm</button>
+            </div>
+        </div>
+        
+    </main>
+    
+    <script src="main.js" type="module"></script>
+
+</body>
+</html>

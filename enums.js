@@ -1,0 +1,20 @@
+const _basicSkills = [{name:"athletics",modifier:"strenght"},
+                    {name:"acrobatics",modifier:"dexterity"},
+                    {name:"sleight of hands",modifier:"dexterity"},
+                    {name:"stealth",modifier:"dexterity"},
+                    {name:"arcana",modifier:"intelligence"},
+                    {name:"history",modifier:"intelligence"},
+                    {name:"investigation",modifier:"intelligence"},
+                    {name:"nature",modifier:"intelligence"},
+                    {name:"religion",modifier:"intelligence"},
+                    {name:"animal handling",modifier:"wisdom"},
+                    {name:"insight",modifier:"wisdom"},
+                    {name:"medicine",modifier:"wisdom"},
+                    {name:"perception",modifier:"wisdom"},
+                    {name:"survival",modifier:"wisdom"},
+                    {name:"deception",modifier:"charisma"},
+                    {name:"intimidation",modifier:"charisma"},
+                    {name:"performance",modifier:"charisma"},
+                    {name:"persuasion",modifier:"charisma"},];
+
+export {_basicSkills}                    
