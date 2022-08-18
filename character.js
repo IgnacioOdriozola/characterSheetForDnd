@@ -12,7 +12,7 @@ class Character{
         this._inventory=[];
         this._spellList = [];
         this._hitPoints = "";
-        this._portrait = "./src/img/Character-design-paladin.jpg"
+        this._portrait = ""
     }
 
     //inventario del personaje  (...) a desarrollar

@@ -45,6 +45,7 @@ function startClassModal(characterName,characterRace, classesOptions){
             character._characterClass = finalClass;
         }else{
             character = new Character(characterName.value,characterRace,finalClass);
+            character._portrait= "./src/img/Character-design-paladin.jpg"
         }
         const htmlBuilder = new HtmlBuilder();
         htmlBuilder.setSkillProficiences(character);
@@ -71,14 +72,7 @@ function startBuilder(character){
             builder.setAbilitiesScores(character);
             builder.setSkillsScores(2,skillAcumulator,_basicSkills,character);
 
-            const characters = localStorage.getItem("characters");
-            let parsedCharacters = JSON.parse(characters);
-            if(!parsedCharacters){
-                parsedCharacters=[];
-            }
-            console.log(parsedCharacters);
-            parsedCharacters.push(character);
-            localStorage.setItem("characters",JSON.stringify(parsedCharacters));
+            setCharactersStorage(character)
 
             const htmlBuilder = new HtmlBuilder();
             htmlBuilder.character = character;
@@ -86,11 +80,10 @@ function startBuilder(character){
             htmlBuilder.setHtmlAbilities();
             htmlBuilder.setHtmlSkills();
 
-            console.log(document.getElementById("characterImg"));
     }
 }
 
-    function readURL() {
+    function readURL(character) {
         const input =  document.getElementById("newImage")
         const charaterImg = document.getElementById("characterImg")
         if (input.files && input.files[0]) {
@@ -100,7 +93,10 @@ function startBuilder(character){
                 charaterImg.setAttribute("src",e.target.result)
             };
     
-            reader.readAsDataURL(input.files[0]);
+            let i = reader.readAsDataURL(input.files[0]);
+            character._portrait = input.files[0].name;
+            setCharactersStorage(character)
+            //character._portrait = reader.readAsDataURL(input.files[0]);
         }
     }
 
@@ -121,6 +117,20 @@ function startBuilder(character){
         character._portrait = object._portrait;
 
         return character;
+    }
+
+    function setCharactersStorage(character){
+        const characters = localStorage.getItem("characters");
+        let parsedCharacters = JSON.parse(characters);
+        if(!parsedCharacters){
+            parsedCharacters=[];
+        }
+        
+        if(parsedCharacters.some(char=>char._name === character._name)){
+            let index = parsedCharacters.indexOf(parsedCharacters.find(pc => pc._name === character._name))
+            parsedCharacters[index] = character;
+        }else  parsedCharacters.push(character);
+        localStorage.setItem("characters",JSON.stringify(parsedCharacters));
     }
 
 

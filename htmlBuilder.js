@@ -1,4 +1,4 @@
-import {startBuilder} from "./functions.js"
+import {startBuilder,readURL} from "./functions.js"
 
 class HtmlBuilder{
     constructor(){
@@ -96,20 +96,18 @@ class HtmlBuilder{
     }
 
     setCharacterInfo(){
-        console.log(this.character);
         const htmlMain = document.getElementsByTagName("main")[0];
         const sectionInfo = document.createElement("section");
         sectionInfo.setAttribute("id","characterDescription");
         sectionInfo.innerHTML = `<article class="characterInfo">
                                     <picture id="characterPicture">
-                                        <img id="characterImg" src="./src/img/Character-design-paladin.jpg" alt="Imagen del personaje ${this.character._name}">
+                                        <img id="characterImg" src="${this.character._portrait}" alt="Imagen del personaje ${this.character._name}">
                                         
                                     </picture>
                                     <div class="characterNameAndClass">
                                         <h2>${this.character._name}</h2>
                                         <p>${this.character._race._name} ${this.character._characterClass._name}</p>
                                         <p>Lvl 1</p>
-                                        <input type='file' id="newImage" />
                                     </div>
                                 </article>
                                 <article class="attributes">
@@ -130,7 +128,11 @@ class HtmlBuilder{
                                     <span class="abilityToFill" id="speed">${this.character._race._speed}</span>
                                 </div>
                                 </article>`
-        htmlMain.appendChild(sectionInfo)
+        htmlMain.appendChild(sectionInfo);
+        /* 
+        <input type='file' id="newImage" />
+
+        document.getElementById("newImage").onchange = () => readURL(this.character); */
     }
 
     setHtmlAbilities(){
