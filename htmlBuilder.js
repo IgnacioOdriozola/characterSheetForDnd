@@ -148,9 +148,8 @@ class HtmlBuilder{
         
         this.character._abilities.forEach(ability => {
             let sign= "";
-            if(ability.modifier>0||ability.modifier==0){
-                sign = "+";
-            }
+
+            (ability.modifier>0||ability.modifier==0) && (sign = "+");
 
             const characterSheetAbility = document.createElement("article");
             characterSheetAbility.setAttribute("class","abilityContainer")
@@ -181,9 +180,8 @@ class HtmlBuilder{
 
         this.character._skills.forEach(skill => {
             let sign= "";
-            if(skill.score>0||skill.score==0){
-                sign = "+";
-            }
+
+            (skill.score>0||skill.score==0) && (sign = "+");
 
             const skillContainer = document.createElement("container");
             skillContainer.setAttribute("class","skillContainer");

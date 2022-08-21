@@ -20,8 +20,9 @@ class AbilityScore{
     }
 
     calculateModifier(score){
-        if(score<10) return (score - 11)/2;
-        else return (score -10)/2
+        let finalScore;
+        score<10 ? finalScore = (score-11)/2 : finalScore = (score-10)/2 ;
+        return finalScore;
     }
 
     setProficientSavingThrow(savingThrow){

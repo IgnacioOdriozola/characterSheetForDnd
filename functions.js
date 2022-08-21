@@ -16,7 +16,7 @@ function startNameModal(racesOptions, classesOptions){
     const characterName = document.getElementById("characterName");
     let change = () => {
         let selectedRace = choosedRaceName.options[choosedRaceName.selectedIndex].value;
-        if(characterName.value.trim()!= "" &&characterName.value!= null && selectedRace != "default"){
+        if(characterName.value.trim()!= "" && characterName.value!= null && selectedRace != "default"){
             let choosedRace = racesOptions.find( co => co._name == selectedRace);
 
             const nameModalButton = document.getElementById("modalNameButton");
@@ -122,10 +122,11 @@ function startBuilder(character){
     function setCharactersStorage(character){
         const characters = localStorage.getItem("characters");
         let parsedCharacters = JSON.parse(characters);
-        if(!parsedCharacters){
-            parsedCharacters=[];
-        }
+
+        //si no existe el objeto del storage se crea uno nuevo
+        !parsedCharacters && (parsedCharacters=[]);
         
+        //Si el personaje está en la lista del storage se actualiza, sino se agrega
         if(parsedCharacters.some(char=>char._name === character._name)){
             let index = parsedCharacters.indexOf(parsedCharacters.find(pc => pc._name === character._name))
             parsedCharacters[index] = character;
