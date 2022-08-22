@@ -239,9 +239,13 @@ padding: 1rem;
 /* Modal Content */
 .modal-content {
 margin: auto;
-padding: 20px;
-border: 1px solid #888;
+padding: 5rem;
 width: 80%;
+border: none;
+background: none;
+background-image: url("./src/img/kisspng-parchment-paper-parchment-paper-kraft-paper-papel-5ac62851bf3ef6.4849303415229358897834.png");
+background-size: cover;
+
 }
 
 #throwsConfirmation{
@@ -358,12 +362,12 @@ font-size: large;
 line-height: 45px;
 }
 
-.tooltip {
+.skillTooltip {
   position: relative;
   display: inline-block;
 }
 
-.tooltip .tooltipText {
+.skillTooltip .skillTooltipText {
   visibility: hidden;
   width: 120px;
   background-color: #555;
@@ -380,7 +384,7 @@ line-height: 45px;
   transition: opacity 0.3s;
 }
 
-.tooltip .tooltipText::after {
+.skillTooltip .skillTooltipText::after {
   content: "";
   position: absolute;
   top: 100%;
@@ -391,7 +395,7 @@ line-height: 45px;
   border-color: #555 transparent transparent transparent;
 }
 
-.tooltip:hover .tooltipText {
+.skillTooltip:hover .skillTooltipText {
   visibility: visible;
   opacity: 1;
 }

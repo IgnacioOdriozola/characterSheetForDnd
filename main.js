@@ -1,16 +1,9 @@
 import { HtmlBuilder } from "./htmlBuilder.js";
-import { RacesIntializer } from "./racesInitializer.js";
-import { ClassesInitializer } from "./classesInitializer.js";
-import { startNameModal,objectToCharacter } from "./functions.js";
+import { initialize,objectToCharacter,swalInitName } from "./functions.js";
 
 //se setean razas y clases en el html para que el jugador elija
 const htmlBuilder = new HtmlBuilder();
-const racesInitializer = new RacesIntializer();
-racesInitializer.initializeRaces();
-htmlBuilder.setHtmlRaces(racesInitializer.getRaces());
-const classesInitializer = new ClassesInitializer();
-classesInitializer.initializeClasses();
-htmlBuilder.setHtmlCharacterClasses(classesInitializer.getClasses());
+initialize(htmlBuilder)
 
 const characters = localStorage.getItem("characters");
 //si en el storage hay personajes creados, los carga para elegir o crear uno nuevo (ya está en el html)
@@ -19,7 +12,7 @@ if(characters){
     characterListModal.style.display = "block";
 
     const newCharOption = document.getElementById("newCharacter");
-    newCharOption.onclick = () => startNameModal(racesInitializer.getRaces(),classesInitializer.getClasses());
+    newCharOption.onclick = () => swalInitName(htmlBuilder);// startNameModal(racesInitializer.getRaces(),classesInitializer.getClasses());
 
     let parsedCharacters = JSON.parse(characters);
 
@@ -29,7 +22,6 @@ if(characters){
     parsedCharacters.forEach(element => {
         let character = objectToCharacter(parsedCharacters.find(char => char._name === element._name));
 
-        console.log(character);
         const newChar = document.createElement("span");
         newChar.setAttribute("class","newCharContainer");
         newChar.setAttribute("id",character._name)
@@ -53,7 +45,8 @@ if(characters){
 }
 //si no hay personajes creados pasa directamente a la creación
 else{
-    startNameModal(racesInitializer.getRaces(),classesInitializer.getClasses());
+    swalInitName(htmlBuilder)
+    //startNameModal(racesInitializer.getRaces(),classesInitializer.getClasses());
 }
 
 

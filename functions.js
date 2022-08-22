@@ -1,16 +1,164 @@
 import { Character } from "./character.js";
 import { CharacterBuilder } from "./characterBuilder.js";
 import {HtmlBuilder} from "./htmlBuilder.js";
-import { _basicSkills} from "./enums.js"
+import { _basicSkills, basicRaces} from "./enums.js";
+import { RacesIntializer } from "./racesInitializer.js";
+import { ClassesInitializer} from "./classesInitializer.js";
 
-function startNameModal(racesOptions, classesOptions){
+let htmlBuilder;
+let racesOptions;
+let classesOptions;
+let classesOptionNames = [];
+let characterName = "";
+let characterRace = "";
+let characterClass = "";
+let character = null;
+
+function initialize(builder){
+    htmlBuilder = builder
+    const racesInitializer = new RacesIntializer();
+    racesInitializer.initializeRaces();
+    racesOptions = racesInitializer.getRaces();
+    htmlBuilder.setHtmlRaces(racesInitializer.getRaces());
+    const classesInitializer = new ClassesInitializer();
+    classesInitializer.initializeClasses();
+    classesOptions = classesInitializer.getClasses();
+    classesOptions.forEach(option => classesOptionNames.push(option._name))
+    htmlBuilder.setHtmlCharacterClasses(classesInitializer.getClasses());
+}
+
+function swalInitName(){
+    const characterListModal = document.getElementById("charactersListModal");
+    characterListModal.style.display = "none";
+    Swal.fire({
+        title: `Enter your character's name`,
+        input: 'text',
+        showCancelButton: false,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'You need to write something!'
+          }else{
+            characterName = value;
+          }
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+            swalInitRace()
+          }
+        })
+}
+
+function swalInitRace(){
+    const inputOptions = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            'Human': `<img src="${basicRaces[0].img}"  width="100%" height="auto" style="object-fit: cover" alt="new Character">`,
+            'Dwarf': `<img src="${basicRaces[1].img}" width="100%" style="object-fit: cover" height="auto" alt="new Character">`,
+            'Elf': `<img src="${basicRaces[2].img}" width="100%" height="auto" style="object-fit: cover" alt="new Character">`
+          })
+        }, 500)
+      })
+      
+      Swal.fire({
+        title: 'Select race',
+        input: 'radio',
+        inputOptions: inputOptions,
+        width: 'auto',
+        padding : '3rem',
+        inputValidator: (value) => {
+          if (!value) {
+            return 'You need to choose something!'
+          }else{
+            characterRace = racesOptions.find( co => co._name == value);
+          } 
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+            swalInitClass()
+          }
+        })
+
+}
+
+function swalInitClass(){
+    const { value: choosedClass } = Swal.fire({
+        title: 'Choose your class',
+        input: 'select',
+        inputOptions: {
+          classesOptionNames
+        },
+        inputPlaceholder: 'Select a class',
+        showCancelButton: false,
+        inputValidator: (value) => {
+            if (!value) {
+                return 'You need to choose something!'
+            }else{
+                characterClass = classesOptions.find( co => co._name == classesOptionNames[value]);
+                
+                if(character){
+                    character._characterClass = characterClass;
+                }else{
+                    character = new Character(characterName,characterRace,characterClass);
+                    //se puede mejorar?
+                    character._portrait= basicRaces[basicRaces.indexOf(basicRaces.find(br=> br.name === characterRace._name))].img;    
+                }
+                /* const htmlBuilder = new HtmlBuilder();
+                htmlBuilder.setSkillProficiences(character); */
+            } 
+        }  
+      }).then((result)=>{
+        if(result.isConfirmed){
+            swalSkillProf();
+        }
+      })
+}
+
+function swalSkillProf(){
+    const divSkill = document.createElement("div");
+    divSkill.setAttribute("class","d-flex flex-row justify-content-around");
+    for(let i =1;i<=(characterClass._chooseableSkills);i++){
+        console.log(characterClass);
+        let options = document.createElement("select");
+        options.setAttribute("name","skill"+i);
+        options.setAttribute("id","skill"+i);
+        characterClass._skills.forEach(skill=>{
+            const newSkill = document.createElement("option");
+            newSkill.setAttribute("value",skill.name);
+            newSkill.innerText=skill.name
+            options.appendChild(newSkill);
+        })
+        divSkill.appendChild(options);
+    }
+    let choosedSkills = [];
+    const { value: formValues } =  Swal.fire({
+        title: 'Choose your proficiencies',
+        html:divSkill,
+        width: 'auto',
+        padding : '3rem',
+        focusConfirm: false,
+        preConfirm: () => {
+            
+            for(let i =1;i<=(characterClass._chooseableSkills);i++){
+                choosedSkills.push(document.getElementById("skill"+i).value)
+            }
+          console.log( choosedSkills)
+        }
+      }).then((result)=>{
+        if(result.isConfirmed){
+            startBuilder(choosedSkills)
+        }
+      })
+}
+
+
+/* function startNameModal(racesOptions, classesOptions){
     //cierra el modal para elegir personaje
     const characterListModal = document.getElementById("charactersListModal");
     characterListModal.style.display = "none";
     
     //abre otro modal para comenzar la creacion de un personaje nuevo
     const nameModal = document.getElementById("nameModal");
-    nameModal.style.display = "block";
+    nameModal.style.display = "none";
 
     const choosedRaceName = document.getElementById("characterRace");
     const characterName = document.getElementById("characterName");
@@ -24,17 +172,19 @@ function startNameModal(racesOptions, classesOptions){
             nameModalButton.onclick = ()=> {
                 nameModal.style.display = "none";
                 classModal.style.display = "block";
-                startClassModal(characterName,choosedRace,classesOptions);
+                startClassModal();
             }      
         }    
     }
  
     characterName.onchange =  change;
     choosedRaceName.onchange =  change;
-}
+} */
 
-function startClassModal(characterName,characterRace, classesOptions){   
-    console.log(classesOptions);     
+/* function startClassModal(){   
+    const characterListModal = document.getElementById("charactersListModal");
+    characterListModal.style.display = "none";
+    classModal.style.display = "block";
     let character = null;
     let choosedClass = document.getElementById("characterClass");
     choosedClass.onchange = ()=>  {
@@ -44,15 +194,16 @@ function startClassModal(characterName,characterRace, classesOptions){
         if(character){
             character._characterClass = finalClass;
         }else{
-            character = new Character(characterName.value,characterRace,finalClass);
-            character._portrait= "./src/img/Character-design-paladin.jpg"
+            character = new Character(characterName,characterRace,finalClass);
+            //se puede mejorar?
+            character._portrait= basicRaces[basicRaces.indexOf(basicRaces.find(br=> br.name === characterRace._name))].img;
         }
         const htmlBuilder = new HtmlBuilder();
         htmlBuilder.setSkillProficiences(character);
     }
-}
+} */
 
-function startBuilder(character){
+function startBuilder(skillAcumulator){/* 
     var classModal = document.getElementById("classModal");
     classModal.style.display = "none";
     let choosedSkills = document.getElementById("skillsSelectable")
@@ -61,7 +212,7 @@ function startBuilder(character){
     for(let i =0;i<choosedSkills.childNodes.length-1;i++){
         let skillProficiency = document.getElementsByName("skill"+i)[0];
         skillAcumulator.push(skillProficiency.options[skillProficiency.selectedIndex].value)
-    }
+    } */
 
     let builder = new CharacterBuilder(character._characterClass,character._race);
     builder.throwDices();
@@ -136,4 +287,4 @@ function startBuilder(character){
 
 
 
-export {startNameModal, startBuilder,objectToCharacter,readURL}
+export {/* startNameModal, */ startBuilder,objectToCharacter,readURL,swalInitName,initialize}

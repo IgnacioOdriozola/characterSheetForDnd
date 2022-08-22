@@ -1,4 +1,4 @@
-import {startBuilder,readURL} from "./functions.js"
+import {startBuilder} from "./functions.js"
 
 class HtmlBuilder{
     constructor(){
@@ -31,8 +31,7 @@ class HtmlBuilder{
         const characterSheetAbilities = document.getElementById("classModalContent");
         const skillsSelectable = document.createElement("div");
         skillsSelectable.setAttribute("id","skillsSelectable")
-        const choosedClass = character._characterClass
-
+        const choosedClass = character._characterClass;
         for(let i=0;i<choosedClass._chooseableSkills;i++){
             const skillSelectable = document.createElement("select");
             skillSelectable.setAttribute("name","skill"+i)
@@ -136,6 +135,7 @@ class HtmlBuilder{
     }
 
     setHtmlAbilities(){
+        const basicAbilities = ["strenght","dexterity","constitution","intelligence","wisdom","charisma"]
         const htmlMain = document.getElementsByTagName("main")[0]
         const divAbilities = document.createElement("div");
         divAbilities.setAttribute("id","abilitiesDiv");
@@ -146,9 +146,9 @@ class HtmlBuilder{
         const characterSheetAbilities = document.createElement("section");
         characterSheetAbilities.setAttribute("class","characterAbilities");
         
-        this.character._abilities.forEach(ability => {
+        basicAbilities.forEach(basicAbility => {
+            let ability = this.character._abilities.find(a => a.name === basicAbility);
             let sign= "";
-
             (ability.modifier>0||ability.modifier==0) && (sign = "+");
 
             const characterSheetAbility = document.createElement("article");
@@ -185,22 +185,22 @@ class HtmlBuilder{
 
             const skillContainer = document.createElement("container");
             skillContainer.setAttribute("class","skillContainer");
-            skillContainer.innerHTML=`<span class="tooltip profCheckbox">
-                                            <span class="tooltipText">prof</span>
+            skillContainer.innerHTML=`<span class="skillTooltip profCheckbox">
+                                            <span class="skillTooltipText">prof</span>
                                             <input id="${skill.name}Prof" type="checkbox"></input>
                                         </span>
-                                        <span class="tooltip profCheckbox">
-                                            <span class="tooltipText">expertise</span>
+                                        <span class="skillTooltip profCheckbox">
+                                            <span class="skillTooltipText">expertise</span>
                                             <input type="checkbox" id="${skill.name}Expertise"></input>
                                         </span>
-                                        <span class="tooltip skillModifier">${skill.modifier.toUpperCase().substr(0,3)}
-                                            <span class="tooltipText">MOD</span>
+                                        <span class="skillTooltip skillModifier">${skill.modifier.toUpperCase().substr(0,3)}
+                                            <span class="skillTooltipText">MOD</span>
                                         </span>
-                                        <span class="tooltip skillDesc">${skill.name}
-                                            <span class="tooltipText">Skill</span>
+                                        <span class="skillTooltip skillDesc">${skill.name}
+                                            <span class="skillTooltipText">Skill</span>
                                         </span>
-                                        <span class="tooltip skillScore">${sign}${skill.score}
-                                            <span class="tooltipText">bonus</span>
+                                        <span class="skillTooltip skillScore">${sign}${skill.score}
+                                            <span class="skillTooltipText">bonus</span>
                                         </span>`
                                         characterSheetSkillsScores.appendChild(skillContainer);
             

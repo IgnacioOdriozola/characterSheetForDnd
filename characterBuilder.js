@@ -50,7 +50,6 @@ class CharacterBuilder{
             let ability = document.getElementById("abilitiesSelector"+i);
             ability = ability.options[ability.selectedIndex].value;
             let savingThrow = this.classBuilder.getSavingThrow().some(((st)=>st === ability)); 
-            console.log(this);
             if(this.raceBuilder.getAbilitiesScoresIncrease().some(asi => asi.name === ability)){
                 let newAbility = new AbilityScore(ability, newScore + this.raceBuilder.getAbilityScoreIncrease(ability).score,savingThrow);
                 this.abilitiesBuilder.push(newAbility);

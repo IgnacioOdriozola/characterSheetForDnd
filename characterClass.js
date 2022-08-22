@@ -21,7 +21,7 @@ class CharacterClass{
     }
 
     //tiradas de salvación con las que el personaje es competente según su clase
-    addSavingThrow(savingThrow){
+    addSavingThrow(...savingThrow){
         this._savingThrows.push(savingThrow);
     }
 
