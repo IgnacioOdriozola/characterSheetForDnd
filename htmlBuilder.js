@@ -101,22 +101,21 @@ class HtmlBuilder{
         sectionInfo.innerHTML = `<article class="characterInfo">
                                     <picture id="characterPicture">
                                         <img id="characterImg" src="${this.character._portrait}" alt="Imagen del personaje ${this.character._name}">
-                                        
                                     </picture>
                                     <div class="characterNameAndClass">
                                         <h2>${this.character._name}</h2>
                                         <p>${this.character._race._name} ${this.character._characterClass._name}</p>
-                                        <p>Lvl 1</p>
+                                        <p>Lvl: ${this.character._lvl}</p>
                                     </div>
                                 </article>
                                 <article class="attributes">
                                     <span id="armorContainer" class="attributesContainer">
                                         <h2>Armor</h2>
-                                        <span class="abilityToFill" id="characterArmor">${parseInt(this.character.getdexterity().modifier)+10}</span>
+                                        <span class="abilityToFill" id="characterArmor">${this.character._armor}</span>
                                     </span>
                                     <span id="hpContainer" class="attributesContainer">
                                         <h2>HP</h2>
-                                        <span class="abilityToFill" id="characterHp">${parseInt(this.character._characterClass._hitDice)+parseInt(this.character.getConstitution().modifier)}</span>
+                                        <span class="abilityToFill" id="characterHp">${this.character._hitPoints}</span>
                                     </span>
                                 </article>
                                 <article>
@@ -164,57 +163,6 @@ class HtmlBuilder{
         })
         divAbilities.appendChild(characterSheetAbilities)
         htmlMain.appendChild(divAbilities)
-    }
-
-    setHtmlSkills(){
-        const htmlMain = document.getElementsByTagName("main")[0];
-        const characterUtilities = document.createElement("section");
-        characterUtilities.setAttribute("class","characterUtilities")
-        const characterSheetSkillsScores = document.createElement("article");
-        characterSheetSkillsScores.setAttribute("class", "characterSkills");
-        const subtitle = document.createElement("h2");
-        subtitle.innerText = "Skills";
-        characterSheetSkillsScores.appendChild(subtitle)
-        characterUtilities.appendChild(characterSheetSkillsScores)
-        htmlMain.appendChild(characterUtilities);
-
-        this.character._skills.forEach(skill => {
-            let sign= "";
-
-            (skill.score>0||skill.score==0) && (sign = "+");
-
-            const skillContainer = document.createElement("container");
-            skillContainer.setAttribute("class","skillContainer");
-            skillContainer.innerHTML=`<span class="skillTooltip profCheckbox">
-                                            <span class="skillTooltipText">prof</span>
-                                            <input id="${skill.name}Prof" type="checkbox"></input>
-                                        </span>
-                                        <span class="skillTooltip profCheckbox">
-                                            <span class="skillTooltipText">expertise</span>
-                                            <input type="checkbox" id="${skill.name}Expertise"></input>
-                                        </span>
-                                        <span class="skillTooltip skillModifier">${skill.modifier.toUpperCase().substr(0,3)}
-                                            <span class="skillTooltipText">MOD</span>
-                                        </span>
-                                        <span class="skillTooltip skillDesc">${skill.name}
-                                            <span class="skillTooltipText">Skill</span>
-                                        </span>
-                                        <span class="skillTooltip skillScore">${sign}${skill.score}
-                                            <span class="skillTooltipText">bonus</span>
-                                        </span>`
-                                        characterSheetSkillsScores.appendChild(skillContainer);
-            
-            const characterSheetSkillProficiency = document.getElementById(`${skill.name}Prof`);
-            const characterSheetSkillExpertise = document.getElementById(`${skill.name}Expertise`);
-            
-            if(skill.isProficient){
-                characterSheetSkillProficiency.checked = true;
-            }else if(skill.hasExpertise){
-                characterSheetSkillExpertise.checked = true;
-            }
-           
-        })
-        
     }
 }
 

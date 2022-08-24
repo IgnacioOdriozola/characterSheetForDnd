@@ -19,9 +19,9 @@ const _basicSkills = [{name:"athletics",modifier:"strenght"},//0
 
 
 const basicRaces = [
-    {name: "Human",age: 70,abilitiesScoresIncrease:[{name : "strenght", score: 1},{name : "dexterity", score: 1},{name : "constitution", score: 1},{name : "intelligence", score: 1},{name : "wisdom", score: 1},{name : "charisma", score: 1}],speed:30,darkVision:0, img : "./src/img/Character-design-cleric.jpg"},
-    {name: "Dwarf",age: 350,abilitiesScoresIncrease:[{name : "strenght", score: 2},{name : "constitution", score: 2}],speed:30,darkVision:0,  img : "./src/img/Character-design-artificeAlquimista.jpg"},
-    {name: "Elf",age: 650,abilitiesScoresIncrease:[{name : "dexterity", score: 2},{name : "intelligence", score: 1}],speed:30,darkVision:0,  img : "./src/img/Character-design-paladin.jpg"}
+    {name: "Human",age: 70,abilitiesScoresIncrease:[{name : "strenght", score: 1},{name : "dexterity", score: 1},{name : "constitution", score: 1},{name : "intelligence", score: 1},{name : "wisdom", score: 1},{name : "charisma", score: 1}],speed:30,darkVision:0, img : "./src/img/human.jpeg"},
+    {name: "Dwarf",age: 350,abilitiesScoresIncrease:[{name : "strenght", score: 2},{name : "constitution", score: 2}],speed:30,darkVision:0,  img : "./src/img/dwarf.jpeg"},
+    {name: "Elf",age: 650,abilitiesScoresIncrease:[{name : "dexterity", score: 2},{name : "intelligence", score: 1}],speed:30,darkVision:0,  img : "./src/img/elf.jpeg"}
 ];
 
 const basicClasses = [
@@ -29,4 +29,7 @@ const basicClasses = [
     {name: "Wizard",hitDice: "6",savingThrow:["intelligence","wisdom"],choosableSkills:2,skills:[4,5,6,8,10,11]},
     {name: "Rogue",hitDice: "8",savingThrow:["dexterity","intelligence"],choosableSkills:4,skills:[0,1,2,3,6,10,12,14,15,16,17]}
 ];
-export {_basicSkills, basicRaces,basicClasses}                    
+
+const proficiencyBonus = [0,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6];
+
+export {_basicSkills, basicRaces,basicClasses,proficiencyBonus}                    

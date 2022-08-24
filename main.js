@@ -38,7 +38,7 @@ if(characters){
             
             htmlBuilder.setCharacterInfo();
             htmlBuilder.setHtmlAbilities();
-            htmlBuilder.setHtmlSkills();
+            //htmlBuilder.setHtmlSkills();
         }
         characterList.appendChild(newChar);
     });

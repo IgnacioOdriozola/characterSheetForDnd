@@ -1,18 +1,36 @@
+import { proficiencyBonus } from "./enums.js";
+
 class Character{
     constructor(name, race,characterClass){
         this._name = name;
-        this._lvl = 0;
+        this._lvl = 1;
         this._xp=0;
         this._proficiencyBonus = 2;
         this._race = race;
         this._characterClass = characterClass;
         this._abilities = [];
-        this._skills = [];
+        //this._skills = [];
         this._background ="";
         this._inventory=[];
         this._spellList = [];
         this._hitPoints = "";
-        this._portrait = ""
+        this._portrait = "";
+        this._armor = 10;
+        this._weapon;
+    }
+
+
+    lvlUp(){
+        this._lvl++;
+        this._proficiencyBonus = proficiencyBonus[this._lvl];
+        this._hitPoints += (parseInt(this._characterClass._hitDice)/2)+1;
+    }
+
+    setArmor(){
+        let bestArmor =0;
+        this._inventory.filter(item => 
+            item.type === "armor").forEach(armor=> armor.score> bestArmor || (bestArmor = armor.score))
+        this._armor += this.getdexterity().modifier + bestArmor;
     }
 
     //inventario del personaje  (...) a desarrollar
