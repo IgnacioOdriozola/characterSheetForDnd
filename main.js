@@ -23,7 +23,7 @@ if(characters){
         let character = objectToCharacter(parsedCharacters.find(char => char._name === element._name));
 
         const newChar = document.createElement("span");
-        newChar.setAttribute("class","newCharContainer");
+        newChar.setAttribute("class","newCharContainer doubleRedBorder");
         newChar.setAttribute("id",character._name)
         newChar.innerHTML = ` <img src="${character._portrait}" alt="Choose your character: ${character._name}">
                         <h3>${character._name}</h3>
@@ -38,6 +38,7 @@ if(characters){
             
             htmlBuilder.setCharacterInfo();
             htmlBuilder.setHtmlAbilities();
+            htmlBuilder.setActionsOption()
             //htmlBuilder.setHtmlSkills();
         }
         characterList.appendChild(newChar);

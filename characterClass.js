@@ -8,6 +8,7 @@ class CharacterClass{
         this._skills = [];
         this._equipment = [];
         this._features = [];
+        this._spells = [];
     }
 
     //dado de puntos de vida del personaje segun su clase

@@ -64,7 +64,7 @@ class HtmlBuilder{
         let i=0;
         diceThrows.forEach(dt => {
             const throwContainer = document.createElement("div")
-            throwContainer.setAttribute("class","throwContainer")
+            throwContainer.setAttribute("class","throwContainer doubleRedBorder")
             const diceThrow = document.createElement("span");
             diceThrow.setAttribute("class","dicesScore");
             diceThrow.setAttribute("id","diceThrow"+i);
@@ -98,7 +98,8 @@ class HtmlBuilder{
         const htmlMain = document.getElementsByTagName("main")[0];
         const sectionInfo = document.createElement("section");
         sectionInfo.setAttribute("id","characterDescription");
-        sectionInfo.innerHTML = `<article class="characterInfo">
+        sectionInfo.setAttribute("class", "doubleRedBorder")
+        sectionInfo.innerHTML = `<article class="characterInfo doubleRedBorder">
                                     <picture id="characterPicture">
                                         <img id="characterImg" src="${this.character._portrait}" alt="Imagen del personaje ${this.character._name}">
                                     </picture>
@@ -108,7 +109,7 @@ class HtmlBuilder{
                                         <p>Lvl: ${this.character._lvl}</p>
                                     </div>
                                 </article>
-                                <article class="attributes">
+                                <article class="attributes doubleRedBorder">
                                     <span id="armorContainer" class="attributesContainer">
                                         <h2>Armor</h2>
                                         <span class="abilityToFill" id="characterArmor">${this.character._armor}</span>
@@ -119,11 +120,15 @@ class HtmlBuilder{
                                     </span>
                                 </article>
                                 <article>
-                                <div class="attributesContainer">
+                                <div class="attributes doubleRedBorder">
+                                <span id="armorContainer" class="attributesContainer">
                                     <p>Proficiency</p>
                                     <span class="abilityToFill" id="proficiency">${this.character._proficiencyBonus}</span>
+                                </span>
+                                <span id="armorContainer" class="attributesContainer">
                                     <p>Speed</p>
                                     <span class="abilityToFill" id="speed">${this.character._race._speed}</span>
+                                </span>
                                 </div>
                                 </article>`
         htmlMain.appendChild(sectionInfo);
@@ -138,7 +143,7 @@ class HtmlBuilder{
         const htmlMain = document.getElementsByTagName("main")[0]
         const divAbilities = document.createElement("div");
         divAbilities.setAttribute("id","abilitiesDiv");
-        divAbilities.setAttribute("class","abilitiesDiv")
+        divAbilities.setAttribute("class","abilitiesDiv doubleRedBorder")
         const subtitle = document.createElement("h2");
         subtitle.innerText = "Abilities";
         divAbilities.appendChild(subtitle);
@@ -151,7 +156,7 @@ class HtmlBuilder{
             (ability.modifier>0||ability.modifier==0) && (sign = "+");
 
             const characterSheetAbility = document.createElement("article");
-            characterSheetAbility.setAttribute("class","abilityContainer")
+            characterSheetAbility.setAttribute("class","abilityContainer doubleRedBorder")
             characterSheetAbility.innerHTML = `
             <div>
                 <h3>${ability.name}</h3>
@@ -163,6 +168,114 @@ class HtmlBuilder{
         })
         divAbilities.appendChild(characterSheetAbilities)
         htmlMain.appendChild(divAbilities)
+    }
+
+    setActionsOption(){
+        const htmlMain = document.getElementsByTagName("main")[0];
+        const actionsSection = document.createElement("section");
+        actionsSection.setAttribute("class","actionsSection abilitiesDiv");
+        const attackOption = document.createElement("article");
+        attackOption.setAttribute("class","doubleRedBorder actionOption");
+        const defenseOption = document.createElement("article");
+        defenseOption.setAttribute("class","doubleRedBorder actionOption");
+        switch(this.character._characterClass._name){
+            case "Rogue": attackOption.innerHTML =`<h2>Attack<h2>
+            <picture>
+                <img src="./src/img/attack.jpg" alt="Attack option">
+            </picture>`;
+            
+            defenseOption.innerHTML =`<h2>Hide</h2>
+            <picture>
+                <img src="./src/img/hide.jpg" alt="Hide option">
+            </picture>`
+            break;
+            case "Wizard" : attackOption.innerHTML =`<h2>Attack<h2>
+            <picture>
+                <img src="./src/img/fire-bolt.jpg" alt="Attack option">
+            </picture>`;
+            
+            defenseOption.innerHTML =`<h2>Defense</h2>
+            <picture>
+                <img src='./src/img/shield-spell.jpg' alt='Shield defense option'>
+            </picture>`
+            break;
+            case "Fighter":attackOption.innerHTML =`<h2>Attack<h2>
+            <picture>
+                <img src="./src/img/attack.jpg" alt="Attack option">
+            </picture>`;
+            defenseOption.innerHTML =`<h2>Defense</h2>
+                <picture>
+                    <img src='./src/img/shield.png' alt='Shield defense option'>
+                </picture>`
+                break;
+        }
+
+        attackOption.onclick = () => Swal.fire({
+            
+        })
+        actionsSection.appendChild(attackOption);
+        actionsSection.appendChild(defenseOption);
+/*         console.log(this.character._characterClass._name);
+        if(this.character._characterClass._name !== "Rogue"){
+            
+            if(this.character._characterClass._name!=="Wizard"){
+                defenseOption.innerHTML =`<h2>Defense options</h2>
+                <picture>
+                    <img src='./src/img/shield.png' alt='Shield defense option'>
+                </picture>`
+            }else{
+                defenseOption.innerHTML =`<h2>Defense options</h2>
+                <picture>
+                    <img src='./src/img/shield-spell.jpg' alt='Shield defense option'>
+                </picture>`
+            }
+            defenseOption.onclick = ()=> Swal.fire({
+            })
+            
+        }else{
+            const quickActionOption = document.createElement("article");
+            quickActionOption.setAttribute("class","doubleRedBorder actionOption");
+            quickActionOption.innerHTML =`<h2>Hide option</h2>
+            <picture>
+                <img src="./src/img/hide.jpg" alt="Hide option">
+            </picture>`
+            quickActionOption.onclick = ()=> Swal.fire({
+            })
+            
+            actionsSection.appendChild(quickActionOption);
+        } */
+/*         const movementOption = document.createElement("article");
+        movementOption.setAttribute("class","doubleRedBorder actionOption");
+        movementOption.innerHTML =`<h2>Movement options</h2>
+        <picture>
+            <img src="./src/img/movement.jpg" alt="Movement option">
+        </picture>`
+        movementOption.onclick =() => Swal.fire({
+
+        })
+        actionsSection.appendChild(movementOption); */
+        const socializeOption = document.createElement("article");
+        socializeOption.setAttribute("class","doubleRedBorder actionOption");
+        socializeOption.innerHTML =`<h2>Talk</h2>
+        <picture>
+            <img src="./src/img/interact.jpg" alt="Social option">
+        </picture>
+        `
+        socializeOption.onclick =() => Swal.fire({
+
+        })
+        actionsSection.appendChild(socializeOption);
+
+        htmlMain.appendChild(actionsSection)
+
+        const startFightButtonDiv = document.createElement("div");
+        startFightButtonDiv.setAttribute("class","startFightButtonDiv");
+        const startFightButton = document.createElement("button");
+        startFightButton.setAttribute("class","startFightButton");
+        startFightButton.innerText = "Start a fight!"
+
+        startFightButtonDiv.appendChild(startFightButton);
+        htmlMain.appendChild(startFightButtonDiv);
     }
 }
 

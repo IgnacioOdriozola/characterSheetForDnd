@@ -1,6 +1,7 @@
 import { AbilityScore } from "./abilityScore.js";
 import { HtmlBuilder} from "./htmlBuilder.js";
-import { Skill } from "./characterSkills.js"
+import { Skill } from "./characterSkills.js";
+import { getRandomIntInclusive } from "./functions.js";
 
 class CharacterBuilder{
     constructor(characterClass,race){
@@ -12,11 +13,7 @@ class CharacterBuilder{
         this.throws = []
     }
 
-    getRandomIntInclusive(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1) + min);
-   }
+    
 
     //características del personaje segun sus tiradas de dados, raza y clase
     throwDices(){
@@ -29,7 +26,7 @@ class CharacterBuilder{
             dicesButton.onclick = ()=>{
                 let acum=0;
                 for(let i =1; i<4;i++){
-                    let throwed = this.getRandomIntInclusive(1,6);
+                    let throwed = getRandomIntInclusive(1,6);
                     const dice = document.getElementById("dice"+i);
                     acum = throwed + acum;
                     dice.setAttribute("src","./src/img/dice"+throwed+".png");

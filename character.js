@@ -1,8 +1,10 @@
 import { proficiencyBonus } from "./enums.js";
+import { attack } from "./functions.js";
 
 class Character{
     constructor(name, race,characterClass){
         this._name = name;
+        this._gender;
         this._lvl = 1;
         this._xp=0;
         this._proficiencyBonus = 2;
@@ -27,24 +29,36 @@ class Character{
     }
 
     setArmor(){
-        let bestArmor =0;
-        this._inventory.filter(item => 
-            item.type === "armor").forEach(armor=> armor.score> bestArmor || (bestArmor = armor.score))
-        this._armor += this.getdexterity().modifier + bestArmor;
+        let bestArmor ="";
+        let bestArmorModifier = 0
+        let armors = this._inventory.filter(item => 
+            item.equipment_category.index === "armor");
+        armors.forEach(armor=>{
+            if(armor.armor_class.base>bestArmor){
+                bestArmorModifier = armor.armor_class.base
+                bestArmor = armor
+            }
+        }) 
+
+        if(bestArmor && bestArmor.armor_class.dex_bonus){
+            this._armor = bestArmorModifier + (bestArmor.armor_class.dex_bonus && this.getdexterity().modifier);
+        }else{
+            this._armor = bestArmorModifier
+        }
     }
 
     //inventario del personaje  (...) a desarrollar
-    addItemsToInventory(equipment){
-        this._inventory.push(equipment);
+    addItemsToInventory(...equipment){
+        equipment.forEach(item => this._inventory.push(item))
     }
 
     //hechizos del personaje (...) a desarrollar
     addSpell(spell){
-        this._spellList.push(spell);
+        this._spellList.push(...spell);
     }
 
     setHitPoints(){
-        this._hitPoints = this._characterClass.hitDice+this.getConstitution().modifier;
+        this._hitPoints = parseInt(this._characterClass.hitDice)+parseInt(this.getConstitution().modifier);
     }
 
     //devolución de los atributos del personaje
@@ -64,6 +78,26 @@ class Character{
 
     subSpell(spellToSubstract){
         this._spellList = this._spellList.filter(spell => spell !== spellToSubstract);
+    }
+
+    characterAtack(armor){
+        let attackModifier;
+        let attackDice;
+        if(this.characterClass._name !=="Wizard"){
+            let weapon = this._inventory.filter(item => 
+                item.equipment_category.index === "weapon")[0];
+            attackDice = weapon.danage.damage_dice.spli("d");
+            attackModifier =  this.getAttackModifier(weapon);
+        }else{
+            attackModifier = this.getIntelligence().modifier;
+        }
+        return attack(armor,attackModifier + this._proficiencyBonus,diceQtty,diceFaces) + (this.characterClass._name !=="Wizard"?attackModifier : 0)
+    }
+
+    getAttackModifier(weapon){
+        return weapon.properties.some(prop => prop.index==="finesse")?
+                    this.getdexterity().modifier:
+                    this.getStrenght().modifier;
     }
 }
 
