@@ -1,4 +1,4 @@
-import {startBuilder} from "./functions.js"
+import {startBuilder,getRandomIntInclusive} from "./functions.js"
 
 class HtmlBuilder{
     constructor(){
@@ -210,9 +210,22 @@ class HtmlBuilder{
                 break;
         }
 
-        attackOption.onclick = () => Swal.fire({
-            
-        })
+        attackOption.onclick = () => {
+            const attackDamage = this.character.characterAttack(12);
+            attackDamage ?  
+            Swal.fire("You hit it!","Yor was dealed " + attackDamage + " damage","success")
+            :Swal.fire("You failed","You missed the attack","error")
+        }
+        defenseOption.onclick = () => {
+            if(this.character._characterClass._name!=="Rogue"){
+                Swal.fire("Increase your defense","Your defensive position add +5 against the next attack you recive","success")
+            }else{
+                //console.log(this.character.getDexterity());
+                if(getRandomIntInclusive(1, 20)+this.character._proficiencyBonus<12){
+                    Swal.fire("You're hidding","Your Enemy cannot attacks you this turn and you gain +5 to the next attack","success")
+                }else Swal.fire("You couldn't hide!","Your enemy saw you before you can hide","error")
+            }
+        }
         actionsSection.appendChild(attackOption);
         actionsSection.appendChild(defenseOption);
 /*         console.log(this.character._characterClass._name);

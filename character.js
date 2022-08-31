@@ -80,18 +80,32 @@ class Character{
         this._spellList = this._spellList.filter(spell => spell !== spellToSubstract);
     }
 
-    characterAtack(armor){
+    characterAttack(armor){
         let attackModifier;
         let attackDice;
-        if(this.characterClass._name !=="Wizard"){
+        if(this._characterClass._name !=="Wizard"){
             let weapon = this._inventory.filter(item => 
                 item.equipment_category.index === "weapon")[0];
-            attackDice = weapon.danage.damage_dice.spli("d");
+            attackDice = weapon.damage.damage_dice.split("d");
             attackModifier =  this.getAttackModifier(weapon);
         }else{
+            /* let fireBolt = this._characterClass._spells.filter(spell => spell.index === "fire-bolt")[0];
+            const {
+                lvlOne ,
+                lvlFive,
+                lvlEleven ,
+                lvlSeventeen 
+            } =  fireBolt.damage.damage_at_character_level;
+            console.log(lvlOne); */
+            attackDice = [1,10]
             attackModifier = this.getIntelligence().modifier;
         }
-        return attack(armor,attackModifier + this._proficiencyBonus,diceQtty,diceFaces) + (this.characterClass._name !=="Wizard"?attackModifier : 0)
+        console.log(attackDice);
+        return attack(armor,
+            attackModifier + this._proficiencyBonus,
+            attackDice[0],
+            attackDice[1]) 
+            + (this._characterClass._name !=="Wizard"?attackModifier : 0)
     }
 
     getAttackModifier(weapon){
