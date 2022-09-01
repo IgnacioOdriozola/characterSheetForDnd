@@ -143,7 +143,7 @@ function swalInitClass() {
           //characterClass._equipment.forEach(item => character.addItemsToInventory(item))
           character.addItemsToInventory(...characterClass._equipment);
           character._gender = gender;
-          character._portrait = `./src/img/${character._gender}${character._race._name}${character._characterClass._name}.jpg`;
+          character._portrait = `./src/img/${character._gender.toLowerCase()}${character._race._name.toLowerCase()}${character._characterClass._name.toLowerCase()}.jpg`;
         }
       }
     },
