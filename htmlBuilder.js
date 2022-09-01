@@ -220,7 +220,6 @@ class HtmlBuilder{
             if(this.character._characterClass._name!=="Rogue"){
                 Swal.fire("Increase your defense","Your defensive position add +5 against the next attack you recive","success")
             }else{
-                //console.log(this.character.getDexterity());
                 if(getRandomIntInclusive(1, 20)+this.character._proficiencyBonus<12){
                     Swal.fire("You're hidding","Your Enemy cannot attacks you this turn and you gain +5 to the next attack","success")
                 }else Swal.fire("You couldn't hide!","Your enemy saw you before you can hide","error")

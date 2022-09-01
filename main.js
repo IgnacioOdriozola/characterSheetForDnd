@@ -12,7 +12,7 @@ if(characters){
     characterListModal.style.display = "block";
 
     const newCharOption = document.getElementById("newCharacter");
-    newCharOption.onclick = () => swalInitName(htmlBuilder);// startNameModal(racesInitializer.getRaces(),classesInitializer.getClasses());
+    newCharOption.onclick = () => swalInitName(htmlBuilder);
 
     let parsedCharacters = JSON.parse(characters);
 
@@ -47,7 +47,6 @@ if(characters){
 //si no hay personajes creados pasa directamente a la creación
 else{
     swalInitName(htmlBuilder)
-    //startNameModal(racesInitializer.getRaces(),classesInitializer.getClasses());
 }
 
 

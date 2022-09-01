@@ -100,7 +100,6 @@ class Character{
             attackDice = [1,10]
             attackModifier = this.getIntelligence().modifier;
         }
-        console.log(attackDice);
         return attack(armor,
             attackModifier + this._proficiencyBonus,
             attackDice[0],
