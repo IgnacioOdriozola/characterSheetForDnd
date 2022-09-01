@@ -41,7 +41,7 @@ class Character{
         }) 
 
         if(bestArmor && bestArmor.armor_class.dex_bonus){
-            this._armor = bestArmorModifier + (bestArmor.armor_class.dex_bonus && this.getdexterity().modifier);
+            this._armor = bestArmorModifier + (bestArmor.armor_class.dex_bonus && this.getDexterity().modifier);
         }else{
             this._armor = bestArmorModifier
         }
