@@ -232,6 +232,7 @@ function attack(armor,attackModifier,diceQtty,diceFaces) {
   let attack =
     getRandomIntInclusive(1, 20) + attackModifier;
     console.log(attack);
+    console.log(attack >= armor);
   if (attack >= armor) {
     return getRandomIntInclusive(parseInt(diceQtty), parseInt(diceFaces))
   } else {
