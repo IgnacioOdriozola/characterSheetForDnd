@@ -110,8 +110,8 @@ class Character{
     }
 
     getAttackModifier(weapon){
-        return weapon.properties.some(prop => prop.index==="finesse")?
-                    this.getdexterity().modifier:
+        return weapon.properties.some(prop => prop.index==="finesse"||prop.index==="ammunition")?
+                    this.getDexterity().modifier:
                     this.getStrenght().modifier;
     }
 }

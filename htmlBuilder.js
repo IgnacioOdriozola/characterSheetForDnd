@@ -222,7 +222,8 @@ class HtmlBuilder{
             }else{
                 let stealthThrow = getRandomIntInclusive(1, 20);
                 console.log("Stealth throw: " + stealthThrow);
-                if((stealthThrow+this.character._proficiencyBonus+this.character.getDexterity().modifier)>12){
+                console.log("Total: "+(stealthThrow+parseInt(this.character._proficiencyBonus)+parseInt(this.character.getDexterity().modifier)));
+                if((stealthThrow+parseInt(this.character._proficiencyBonus)+parseInt(this.character.getDexterity().modifier))>12){
                     Swal.fire("You're hidding","Your Enemy cannot attacks you this turn and you gain +5 to the next attack","success")
                 }else Swal.fire("You couldn't hide!","Your enemy saw you before you can hide","error")
             }
@@ -237,7 +238,8 @@ class HtmlBuilder{
         seekOption.onclick =() => {
             let wisdomThrow  = getRandomIntInclusive(1, 20);
                 console.log("Stealth throw: " + wisdomThrow );
-                if((wisdomThrow +this.character._proficiencyBonus+this.character.getWisdom().modifier)>12){
+                console.log("Total: " + (wisdomThrow +parseInt(this.character._proficiencyBonus)+parseInt(this.character.getWisdom().modifier)));
+                if((wisdomThrow +parseInt(this.character._proficiencyBonus)+parseInt(this.character.getWisdom().modifier))>12){
                     Swal.fire("You find it","You successfully find your enemy trying to hide from you and lose their bonus for hiding","success")
                 }else Swal.fire("Oh no!","Your enemy is too good to hide","error")
         }
@@ -251,7 +253,8 @@ class HtmlBuilder{
         socializeOption.onclick =() => {
             let charismaThrow = getRandomIntInclusive(1, 20);
                 console.log("Diplomacy throw: " + charismaThrow);
-                if((charismaThrow+this.character._proficiencyBonus+this.character.getCharisma().modifier)>12){
+                console.log("Total: " + (charismaThrow+this.character._proficiencyBonus+this.character.getCharisma().modifier));
+                if((charismaThrow+parseInt(this.character._proficiencyBonus)+parseInt(this.character.getCharisma().modifier))>12){
                     Swal.fire("You got away with it","You convinced your enemy to retreat without a fight","success")
                 }else Swal.fire("Oh no!","Your enemy got more angry because your words","error")
         }

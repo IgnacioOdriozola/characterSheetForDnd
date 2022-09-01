@@ -232,6 +232,7 @@ function attack(armor,attackModifier,diceQtty,diceFaces) {
   let dice = getRandomIntInclusive(1, 20);
   let attack = dice + attackModifier;
   console.log("d20 roll: " + dice);
+  console.log("Attack: "+attack);
   if (attack >= armor) {
     return dice===20?
         getRandomIntInclusive(parseInt(diceQtty), parseInt(diceFaces))*2
