@@ -100,11 +100,13 @@ class Character{
             attackDice = [1,10]
             attackModifier = this.getIntelligence().modifier;
         }
-        return attack(armor,
+
+        let attackDamage = attack(armor,
             attackModifier + this._proficiencyBonus,
             attackDice[0],
-            attackDice[1]) 
-            + (this._characterClass._name !=="Wizard"?attackModifier : 0)
+            attackDice[1])
+        attackDamage && (attackDamage +=(this._characterClass._name !=="Wizard"?attackModifier : 0))
+        return attackDamage
     }
 
     getAttackModifier(weapon){
