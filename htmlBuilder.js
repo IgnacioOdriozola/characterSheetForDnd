@@ -220,62 +220,44 @@ class HtmlBuilder{
             if(this.character._characterClass._name!=="Rogue"){
                 Swal.fire("Increase your defense","Your defensive position add +5 against the next attack you recive","success")
             }else{
-                if(getRandomIntInclusive(1, 20)+this.character._proficiencyBonus<12){
+                let stealthThrow = getRandomIntInclusive(1, 20);
+                console.log("Stealth throw: " + stealthThrow);
+                if((stealthThrow+this.character._proficiencyBonus+this.character.getDexterity().modifier)>12){
                     Swal.fire("You're hidding","Your Enemy cannot attacks you this turn and you gain +5 to the next attack","success")
                 }else Swal.fire("You couldn't hide!","Your enemy saw you before you can hide","error")
             }
         }
-        actionsSection.appendChild(attackOption);
-        actionsSection.appendChild(defenseOption);
-/*         console.log(this.character._characterClass._name);
-        if(this.character._characterClass._name !== "Rogue"){
-            
-            if(this.character._characterClass._name!=="Wizard"){
-                defenseOption.innerHTML =`<h2>Defense options</h2>
-                <picture>
-                    <img src='./src/img/shield.png' alt='Shield defense option'>
-                </picture>`
-            }else{
-                defenseOption.innerHTML =`<h2>Defense options</h2>
-                <picture>
-                    <img src='./src/img/shield-spell.jpg' alt='Shield defense option'>
-                </picture>`
-            }
-            defenseOption.onclick = ()=> Swal.fire({
-            })
-            
-        }else{
-            const quickActionOption = document.createElement("article");
-            quickActionOption.setAttribute("class","doubleRedBorder actionOption");
-            quickActionOption.innerHTML =`<h2>Hide option</h2>
-            <picture>
-                <img src="./src/img/hide.jpg" alt="Hide option">
-            </picture>`
-            quickActionOption.onclick = ()=> Swal.fire({
-            })
-            
-            actionsSection.appendChild(quickActionOption);
-        } */
-/*         const movementOption = document.createElement("article");
-        movementOption.setAttribute("class","doubleRedBorder actionOption");
-        movementOption.innerHTML =`<h2>Movement options</h2>
-        <picture>
-            <img src="./src/img/movement.jpg" alt="Movement option">
-        </picture>`
-        movementOption.onclick =() => Swal.fire({
 
-        })
-        actionsSection.appendChild(movementOption); */
+         const seekOption = document.createElement("article");
+        seekOption.setAttribute("class","doubleRedBorder actionOption");
+        seekOption.innerHTML =`<h2>Track enemy</h2>
+        <picture>
+            <img src="./src/img/seek.jpg" alt="Tracking option">
+        </picture>`
+        seekOption.onclick =() => {
+            let wisdomThrow  = getRandomIntInclusive(1, 20);
+                console.log("Stealth throw: " + wisdomThrow );
+                if((wisdomThrow +this.character._proficiencyBonus+this.character.getWisdom().modifier)>12){
+                    Swal.fire("You find it","You successfully find your enemy trying to hide from you and lose their bonus for hiding","success")
+                }else Swal.fire("Oh no!","Your enemy is too good to hide","error")
+        }
         const socializeOption = document.createElement("article");
         socializeOption.setAttribute("class","doubleRedBorder actionOption");
-        socializeOption.innerHTML =`<h2>Talk</h2>
+        socializeOption.innerHTML =`<h2>Diplomacy</h2>
         <picture>
-            <img src="./src/img/interact.jpg" alt="Social option">
+            <img src="./src/img/diplomacy.jpg" alt="Social option">
         </picture>
         `
-        socializeOption.onclick =() => Swal.fire({
-
-        })
+        socializeOption.onclick =() => {
+            let charismaThrow = getRandomIntInclusive(1, 20);
+                console.log("Diplomacy throw: " + charismaThrow);
+                if((charismaThrow+this.character._proficiencyBonus+this.character.getCharisma().modifier)>12){
+                    Swal.fire("You got away with it","You convinced your enemy to retreat without a fight","success")
+                }else Swal.fire("Oh no!","Your enemy got more angry because your words","error")
+        }
+        actionsSection.appendChild(attackOption);
+        actionsSection.appendChild(defenseOption);
+        actionsSection.appendChild(seekOption); 
         actionsSection.appendChild(socializeOption);
 
         htmlMain.appendChild(actionsSection)

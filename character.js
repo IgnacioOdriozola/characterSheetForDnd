@@ -64,7 +64,7 @@ class Character{
     //devolución de los atributos del personaje
     getAbility(ability){return this._abilities.find( iterator => iterator.name === ability)}
     getStrenght(){return this._abilities.find(iterator => iterator.name === "strenght")}
-    getdexterity(){return this._abilities.find(iterator => iterator.name === "dexterity")}
+    getDexterity(){return this._abilities.find(iterator => iterator.name === "dexterity")}
     getConstitution(){return this._abilities.find(iterator => iterator.name === "constitution")}
     getIntelligence(){return this._abilities.find(iterator => iterator.name === "intelligence")}
     getWisdom(){return this._abilities.find(iterator => iterator.name === "wisdom")}

@@ -229,11 +229,13 @@ function getRandomIntInclusive(min, max) {
 }
 
 function attack(armor,attackModifier,diceQtty,diceFaces) {
-  let attack = getRandomIntInclusive(1, 20) + attackModifier;
-  console.log(attack);
-  console.log(attack >= armor);
+  let dice = getRandomIntInclusive(1, 20);
+  let attack = dice + attackModifier;
+  console.log("d20 roll: " + dice);
   if (attack >= armor) {
-    return getRandomIntInclusive(parseInt(diceQtty), parseInt(diceFaces))
+    return dice===20?
+        getRandomIntInclusive(parseInt(diceQtty), parseInt(diceFaces))*2
+        :getRandomIntInclusive(parseInt(diceQtty), parseInt(diceFaces))
   } else {
     return false;
   }
