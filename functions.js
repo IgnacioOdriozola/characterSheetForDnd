@@ -181,7 +181,7 @@ function startBuilder() {
       nonChoosedAbilities = nonChoosedAbilities.filter(a => a !== ability)
     })
 
-    if(!nonChoosedAbilities){
+    if(nonChoosedAbilities.length===0){
       document.getElementById("dicesModal").style.display = "none";
       builder.setAbilitiesScores(character);
       character.setArmor();
