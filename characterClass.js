@@ -4,8 +4,6 @@ class CharacterClass{
         this._hitDice = hitDice;
         this._proficiencies=[];
         this._savingThrows=[];
-        this._chooseableSkills = "";
-        this._skills = [];
         this._equipment = [];
         this._features = [];
         this._spells = [];

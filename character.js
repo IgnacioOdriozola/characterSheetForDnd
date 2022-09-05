@@ -17,7 +17,7 @@ class Character{
         this._spellList = [];
         this._hitPoints = "";
         this._portrait = "";
-        this._armor = 10;
+        this._armor;
         this._weapon;
     }
 
@@ -28,6 +28,7 @@ class Character{
         this._hitPoints += (parseInt(this._characterClass._hitDice)/2)+1;
     }
 
+    //Calcula la armadura del personaje según sus items
     setArmor(){
         let bestArmor ="";
         let bestArmorModifier = 0
@@ -42,8 +43,10 @@ class Character{
 
         if(bestArmor && bestArmor.armor_class.dex_bonus){
             this._armor = bestArmorModifier + (bestArmor.armor_class.dex_bonus && this.getDexterity().modifier);
-        }else{
+        }else if(bestArmor){
             this._armor = bestArmorModifier
+        }else{
+            this._armor = 10 + this.getDexterity().modifier;
         }
     }
 
@@ -80,6 +83,7 @@ class Character{
         this._spellList = this._spellList.filter(spell => spell !== spellToSubstract);
     }
 
+    //Prepara los datos para calcular el ataque segun la clase y arma/hechizo
     characterAttack(armor){
         let attackModifier;
         let attackDice;
@@ -96,7 +100,8 @@ class Character{
                 lvlEleven ,
                 lvlSeventeen 
             } =  fireBolt.damage.damage_at_character_level;
-            console.log(lvlOne); */
+            console.log(lvlOne); 
+            TODO la API devuelve un objeto donde el identificador son numeros ¿Como se recupera ese dato?*/
             attackDice = [1,10]
             attackModifier = this.getIntelligence().modifier;
         }

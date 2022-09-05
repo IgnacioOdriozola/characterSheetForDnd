@@ -1,7 +1,7 @@
 import { Character } from "./character.js";
 import { CharacterBuilder } from "./characterBuilder.js";
 import { HtmlBuilder } from "./htmlBuilder.js";
-import { _basicSkills, basicRaces, basicClasses } from "./enums.js";
+import { basicRaces, basicClasses,basicAbilities } from "./enums.js";
 import { RacesIntializer } from "./racesInitializer.js";
 import { ClassesInitializer } from "./classesInitializer.js";
 
@@ -15,19 +15,19 @@ let characterClass = "";
 let gender = "";
 let character = null;
 
+//Inicializa las clases y razas para poder ser utilizadas en la creación del personaje
 function initialize(builder) {
   htmlBuilder = builder;
   const racesInitializer = new RacesIntializer();
   racesInitializer.initializeRaces();
   racesOptions = racesInitializer.getRaces();
-  htmlBuilder.setHtmlRaces(racesInitializer.getRaces());
   const classesInitializer = new ClassesInitializer();
   classesInitializer.initializeClasses();
   classesOptions = classesInitializer.getClasses();
   classesOptions.forEach((option) => classesOptionNames.push(option._name));
-  htmlBuilder.setHtmlCharacterClasses(classesInitializer.getClasses());
 }
 
+//Dispara el sweet alert para ingresar el nombre del personaje
 function swalInitName() {
   const characterListModal = document.getElementById("charactersListModal");
   characterListModal.style.display = "none";
@@ -49,6 +49,7 @@ function swalInitName() {
   });
 }
 
+//Dispara el sweet alert para elegir el género del personaje
 function swalInitGender() {
   const inputOptions = new Promise((resolve) => {
     setTimeout(() => {
@@ -79,6 +80,7 @@ function swalInitGender() {
   });
 }
 
+//Dispara el sweet alert para elegir la raza del personaje
 function swalInitRace() {
   const inputOptions = new Promise((resolve) => {
     setTimeout(() => {
@@ -110,6 +112,7 @@ function swalInitRace() {
   });
 }
 
+//Dispara el sweet alert para elegir la clase del personaje
 function swalInitClass() {
   const inputOptions = new Promise((resolve) => {
     setTimeout(() => {
@@ -154,6 +157,7 @@ function swalInitClass() {
   });
 }
 
+//Inicia la construcción del personaje con todas sus características
 function startBuilder() {
   let builder = new CharacterBuilder(
     character._characterClass,
@@ -165,22 +169,40 @@ function startBuilder() {
     "abilitiesConfirmation"
   );
   abilitiesConfirmation.onclick = () => {
-    document.getElementById("dicesModal").style.display = "none";
-    builder.setAbilitiesScores(character);
-    character.setArmor();
-    character.setHitPoints();
-    character.addItemsToInventory(...character._characterClass._equipment);
+    let choosedAbilities = [];
+    for(let i = 0;i<6;i++){
+      const abilitySelected = document.getElementById("abilitiesSelector"+i);
+      const value = abilitySelected.options[abilitySelected.selectedIndex].value;
+      choosedAbilities.push(value)
+    }
 
-    setCharactersStorage(character);
+    let nonChoosedAbilities = basicAbilities;
+    choosedAbilities.forEach(ability => {
+      nonChoosedAbilities = nonChoosedAbilities.filter(a => a !== ability)
+    })
 
-    const htmlBuilder = new HtmlBuilder();
-    htmlBuilder.character = character;
-    htmlBuilder.setCharacterInfo();
-    htmlBuilder.setHtmlAbilities();
-    htmlBuilder.setActionsOption();
+    if(!nonChoosedAbilities){
+      document.getElementById("dicesModal").style.display = "none";
+      builder.setAbilitiesScores(character);
+      character.setArmor();
+      character.setHitPoints();
+      character.addItemsToInventory(...character._characterClass._equipment);
+      
+      setCharactersStorage(character);
+
+      const htmlBuilder = new HtmlBuilder();
+      htmlBuilder.character = character;
+      htmlBuilder.setCharacterInfo();
+      htmlBuilder.setHtmlAbilities();
+      htmlBuilder.setActionsOption();
+    }else{
+      Swal.fire("You must pick one of each ability!","you didnt pick " + nonChoosedAbilities.join(", "),"error")
+    }
+
   };
 }
 
+//Convierte el objeto traído del storage a la clase character para poder utilizar sus funciones
 function objectToCharacter(object) {
   const character = new Character();
   character._name = object._name;
@@ -195,10 +217,11 @@ function objectToCharacter(object) {
   character._spellList = object._spellList;
   character._hitPoints = object._hitPoints;
   character._portrait = object._portrait;
-
+  character._armor = object._armor;
   return character;
 }
 
+//Guarda el personaje en el localStorage
 function setCharactersStorage(character) {
   const characters = localStorage.getItem("characters");
   let parsedCharacters = JSON.parse(characters);
@@ -216,18 +239,22 @@ function setCharactersStorage(character) {
   localStorage.setItem("characters", JSON.stringify(parsedCharacters));
 }
 
+//Consulta en la api y recupera el valor requerido
 async function externalResource(path, value) {
   const response = await fetch("https://www.dnd5eapi.co/api/" + path + value);
   const data = await response.json();
   return data;
 }
 
+//Simula la tirada de dados siendo el minimo, la cantidad e dados
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+//Realiza la acción de ataque, tirando el dado de 20 caras para verificar un golpe exitoso
+//y luego el dado de daño segun el arma o hechizo.
 function attack(armor,attackModifier,diceQtty,diceFaces) {
   let dice = getRandomIntInclusive(1, 20);
   let attack = dice + attackModifier;

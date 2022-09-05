@@ -1,59 +1,12 @@
-import {startBuilder,getRandomIntInclusive} from "./functions.js"
+import {getRandomIntInclusive, externalResource} from "./functions.js";
+import { basicAbilities } from "./enums.js";
 
 class HtmlBuilder{
     constructor(){
         this.character = null;
     }
 
-    setHtmlRaces(races){
-        let racesList = document.querySelector("#characterRace");
-        races.forEach( race => {
-            let newRace = document.createElement("option");
-            newRace.innerText = race._name;
-            newRace.className = "characterRace";
-            newRace.setAttribute("value",race._name);
-            racesList.appendChild(newRace)
-        })
-    }
-
-    setHtmlCharacterClasses(characterClasses){
-        let classesList = document.querySelector("#characterClass");
-        characterClasses.forEach( characterClass => {
-            let newClass = document.createElement("option");
-            newClass.innerText = characterClass._name;
-            newClass.className = "characterClass";
-            newClass.setAttribute("value",characterClass._name);
-            classesList.appendChild(newClass)
-        })
-    }
-
-    setSkillProficiences(character){
-        const characterSheetAbilities = document.getElementById("classModalContent");
-        const skillsSelectable = document.createElement("div");
-        skillsSelectable.setAttribute("id","skillsSelectable")
-        const choosedClass = character._characterClass;
-        for(let i=0;i<choosedClass._chooseableSkills;i++){
-            const skillSelectable = document.createElement("select");
-            skillSelectable.setAttribute("name","skill"+i)
-            choosedClass.getSkills().forEach(skill => {
-                let newSkill = document.createElement("option");
-                newSkill.innerText = skill.name;
-                newSkill.className = "characterRace";
-                newSkill.setAttribute("value",skill.name);
-                skillSelectable.appendChild(newSkill);
-            })
-            skillsSelectable.appendChild(skillSelectable);
-        }
-        const skillSelectableButton = document.createElement("button");
-        skillSelectableButton.setAttribute("id","skillSelectableButton");
-        skillSelectableButton.setAttribute("value","Ok");
-        skillSelectableButton.innerText = "Ok";
-        skillsSelectable.appendChild(skillSelectableButton)
-        characterSheetAbilities.appendChild(skillsSelectable);
-
-        skillSelectableButton.onclick = () => startBuilder(character)
-    }
-
+    //Construye el modal para elegir las habilidades de la hoja del personaje
     setAbilitiesChoosables(diceThrows){
         const dicesModal = document.getElementById("dicesThrower");
         const subtitle = document.createElement("h2");
@@ -70,11 +23,20 @@ class HtmlBuilder{
             diceThrow.setAttribute("id","diceThrow"+i);
             diceThrow.innerText = dt;
             
+            const info = document.createElement("button");
+            info.setAttribute("class", "info btn btn-info");
+            info.innerText = "❓"
+            info.onclick = async () => {
+                const data = await externalResource("ability-scores/",info.getAttribute("id"))
+                Swal.fire("",data.desc[0])
+            }
+            throwContainer.appendChild(info)
             throwContainer.appendChild(diceThrow);
             dicesDiv.appendChild(throwContainer);
 
             const abilitiesSelector = document.createElement("select");
             abilitiesSelector.innerHTML = `
+            <option selected disabled>Choose one</option>
             <option value="strenght">Strenght</option>
             <option value="dexterity">Dexterity</option>
             <option value="constitution">Constitution</option>
@@ -83,6 +45,10 @@ class HtmlBuilder{
             <option value="charisma">Charisma</option>`;
 
             abilitiesSelector.setAttribute("id","abilitiesSelector"+i);
+            abilitiesSelector.onchange = () => {
+                let value = abilitiesSelector.options[abilitiesSelector.selectedIndex].value
+                this.setInfo(value,info);
+            }
             
             throwContainer.appendChild(abilitiesSelector)
             dicesDiv.appendChild(throwContainer);
@@ -90,10 +56,17 @@ class HtmlBuilder{
         })
         const abilitiesConfirmationButton = document.getElementById("abilitiesConfirmation")
         abilitiesConfirmationButton.style.display = "block"
-        dicesDiv.appendChild(abilitiesConfirmationButton);
         dicesModal.appendChild(dicesDiv);        
+        dicesModal.appendChild(abilitiesConfirmationButton);
     }
 
+    setInfo(value, input){
+        let subString = value.slice(0,3);
+        input.setAttribute("id",subString);
+        input.style.display = "block";
+    }
+
+    //Construye la sección de información del personaje de la hoja
     setCharacterInfo(){
         const htmlMain = document.getElementsByTagName("main")[0];
         const sectionInfo = document.createElement("section");
@@ -138,8 +111,8 @@ class HtmlBuilder{
         document.getElementById("newImage").onchange = () => readURL(this.character); */
     }
 
+    //Construye la sección de las habilidades de la hoja del personaje
     setHtmlAbilities(){
-        const basicAbilities = ["strenght","dexterity","constitution","intelligence","wisdom","charisma"]
         const htmlMain = document.getElementsByTagName("main")[0]
         const divAbilities = document.createElement("div");
         divAbilities.setAttribute("id","abilitiesDiv");
@@ -170,6 +143,7 @@ class HtmlBuilder{
         htmlMain.appendChild(divAbilities)
     }
 
+    //Construye la sección de acciones de combate de la hoja del personaje
     setActionsOption(){
         const htmlMain = document.getElementsByTagName("main")[0];
         const actionsSection = document.createElement("section");
@@ -239,7 +213,7 @@ class HtmlBuilder{
             let wisdomThrow  = getRandomIntInclusive(1, 20);
                 console.log("Stealth throw: " + wisdomThrow );
                 console.log("Total: " + (wisdomThrow +parseInt(this.character._proficiencyBonus)+parseInt(this.character.getWisdom().modifier)));
-                if((wisdomThrow +parseInt(this.character._proficiencyBonus)+parseInt(this.character.getWisdom().modifier))>12){
+                if((wisdomThrow +parseInt(this.character.getWisdom().modifier))>12){
                     Swal.fire("You find it","You successfully find your enemy trying to hide from you and lose their bonus for hiding","success")
                 }else Swal.fire("Oh no!","Your enemy is too good to hide","error")
         }
@@ -254,7 +228,7 @@ class HtmlBuilder{
             let charismaThrow = getRandomIntInclusive(1, 20);
                 console.log("Diplomacy throw: " + charismaThrow);
                 console.log("Total: " + (charismaThrow+this.character._proficiencyBonus+this.character.getCharisma().modifier));
-                if((charismaThrow+parseInt(this.character._proficiencyBonus)+parseInt(this.character.getCharisma().modifier))>12){
+                if((charismaThrow+parseInt(this.character.getCharisma().modifier))>12){
                     Swal.fire("You got away with it","You convinced your enemy to retreat without a fight","success")
                 }else Swal.fire("Oh no!","Your enemy got more angry because your words","error")
         }
@@ -264,15 +238,6 @@ class HtmlBuilder{
         actionsSection.appendChild(socializeOption);
 
         htmlMain.appendChild(actionsSection)
-
-        const startFightButtonDiv = document.createElement("div");
-        startFightButtonDiv.setAttribute("class","startFightButtonDiv");
-        const startFightButton = document.createElement("button");
-        startFightButton.setAttribute("class","startFightButton");
-        startFightButton.innerText = "Start a fight!"
-
-        startFightButtonDiv.appendChild(startFightButton);
-        htmlMain.appendChild(startFightButtonDiv);
     }
 }
 

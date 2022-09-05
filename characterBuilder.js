@@ -1,13 +1,11 @@
 import { AbilityScore } from "./abilityScore.js";
 import { HtmlBuilder} from "./htmlBuilder.js";
-import { Skill } from "./characterSkills.js";
 import { getRandomIntInclusive } from "./functions.js";
 
 class CharacterBuilder{
     constructor(characterClass,race){
         this.classBuilder = characterClass
         this.abilitiesBuilder = [];
-        this.skillBuilder = [];
         this.htmlBuilder = new HtmlBuilder()
         this.raceBuilder = race;
         this.throws = []
@@ -56,21 +54,6 @@ class CharacterBuilder{
             }
         }
         character._abilities= this.abilitiesBuilder;
-    }
-
-    //habilidades del personaje según sus características
-    setSkillsScores(proficiencyBonus, proficientSkill,basicSkill,character){
-
-        basicSkill.forEach((skill)=>{
-            let ability = this.abilitiesBuilder.find(ab => ab.name === skill.modifier);
-            if(proficientSkill.some(ps => ps === skill.name)){
-                let newSkill = new Skill(skill.name,ability.name,ability.getAbilityModifier(),true,false,proficiencyBonus);
-                this.skillBuilder.push(newSkill);
-            }else{
-                this.skillBuilder.push(new Skill(skill.name,ability.name,ability.getAbilityModifier(),false));
-            }
-        })
-        character._skills= this.skillBuilder;
     }
 
     getAbility(ability){return this.abilitiesBuilder.find(iterator => iterator.name == ability)}
